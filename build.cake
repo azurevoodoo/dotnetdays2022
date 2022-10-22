@@ -15,9 +15,10 @@ Setup(context => new BuildData(
     "src",
     "./artifacts",
     "Release",
-    FormattableString.Invariant(
-        $"{DateTime.UtcNow:yyyy.MM.dd}.0"
-        )
+        GitHubActions.IsRunningOnGitHubActions
+        ? FormattableString.Invariant($"{DateTime.UtcNow:yyyy.MM.dd}.{GitHubActions.Environment.Workflow.RunNumber}")
+        : "1.0.0.0"
+        
 ));
 
 Task("Restore")
@@ -48,6 +49,7 @@ Task("Test")
         (context, data) =>DotNetTest(
             data.Project,
             new DotNetTestSettings {
+                Configuration = data.Configuration,
                 NoBuild = true,
                 NoRestore = true
             }
