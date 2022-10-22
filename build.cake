@@ -75,7 +75,7 @@ Task("Publish")
     .Does<BuildData>(
         (context, data) => GitHubActions.Commands.UploadArtifact(
             data.ArtifactsPath,
-            "dotnetdays"
+          $"dotnetdays{Context.Environment.Platform.Family}"
         )
     );
 
