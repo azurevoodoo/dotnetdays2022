@@ -68,4 +68,16 @@ Task("Pack")
             )
     );
 
+Task("Publish")
+    .IsDependentOn("Pack")
+    .Does<BuildData>(
+        (context, data) => GitHubActions.Commands.UploadArtifact(
+            data.ArtifactsPath,
+            "dotnetdays"
+        )
+    );
+
+Task("GitHubActions")
+    .IsDependentOn("Publish");
+
 RunTarget(Argument("target","Pack"));
