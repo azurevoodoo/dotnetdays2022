@@ -1,3 +1,9 @@
+public static string FileReadText(this ICakeContext context, FilePath file)
+    => System.IO.File.ReadAllText(file.MakeAbsolute(context.Environment).FullPath);
+
+public string FileReadText(FilePath file)
+   => Context.FileReadText(file);
+
 public record BuildData(
     string Project,
     DirectoryPath ArtifactsPath,
